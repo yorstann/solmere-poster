@@ -1,0 +1,9 @@
+[![make.fun · the-poster-for-a-place-that-i-2-20261121-0539](https://make.fun/badge/the-poster-for-a-place-that-i-2-20261121-0539.svg)](https://make.fun/bounty/the-poster-for-a-place-that-i-2-20261121-0539?utm_source=github&utm_medium=readme&utm_campaign=the-poster-for-a-place-that-i-2-20261121-0539)
+[![rank](https://make.fun/badge/the-poster-for-a-place-that-i-2-20261121-0539/yorstann/solmere-poster/rank.svg)](https://make.fun/bounty/the-poster-for-a-place-that-i-2-20261121-0539/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=the-poster-for-a-place-that-i-2-20261121-0539)
+[![reward](https://make.fun/badge/the-poster-for-a-place-that-i-2-20261121-0539/yorstann/solmere-poster/reward.svg)](https://make.fun/bounty/the-poster-for-a-place-that-i-2-20261121-0539?utm_source=github&utm_medium=readme&utm_campaign=the-poster-for-a-place-that-i-2-20261121-0539)
+
+# SOLMERE — a travel poster for a place that isn't there
+
+A single self-contained Node program (`main.ts`, standard library only) that draws a vintage 1930s railway-poster for **Solmere**, a lagoon town that does not exist, and writes it as a 768×1024 PNG. A teal-to-gold sky melts into a low pale sun over a calm lagoon; a white lighthouse with coral-red bands stands on a dark rocky point with a cluster of cream and terracotta houses at its base; sailboats drift on the water under a broken path of golden reflections, framed by palm-frond silhouettes, a dark shoreline, and a thin cream border. The town's name is lettered across the upper third in wide-spaced cream capitals using an embedded single-stroke font — the only text on the poster. Everything is rendered from code on a 2× supersampled raster with a hand-rolled PNG encoder, finished with a whisper of paper grain.
+
+Run it with `node main.ts` (writes `/output/entry.png`, or `$MAKEFUN_OUTPUT_DIR/entry.png` when that variable is set).
