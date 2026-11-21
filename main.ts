@@ -345,15 +345,38 @@ boat(636, 688, 0.55);
 // The rocky point, lighthouse and houses on the right.
 // ---------------------------------------------------------------------------
 
+// The point's top surface, west to east: a clean sloping line the houses
+// and the lighthouse base are seated on.
+const ROCK_SURFACE: Array<[number, number]> = [
+  [522, 600],
+  [552, 597],
+  [592, 594],
+  [642, 590],
+  [700, 586],
+  [768, 590],
+];
+function rockTop(x: number): number {
+  const s = ROCK_SURFACE;
+  if (x <= s[0][0]) return s[0][1];
+  for (let i = 0; i + 1 < s.length; i++) {
+    const [x0, y0] = s[i];
+    const [x1, y1] = s[i + 1];
+    if (x <= x1) return y0 + ((y1 - y0) * (x - x0)) / (x1 - x0);
+  }
+  return s[s.length - 1][1];
+}
+
 polyFill(
   [
-    [768, 592],
-    [702, 586],
-    [652, 596],
-    [620, 614],
-    [607, 642],
-    [628, 666],
-    [690, 676],
+    [768, 590],
+    [700, 586],
+    [642, 590],
+    [592, 594],
+    [552, 597],
+    [522, 600],
+    [534, 636],
+    [570, 660],
+    [650, 676],
     [768, 668],
   ],
   ROCK,
@@ -361,35 +384,38 @@ polyFill(
 ellipseFill(648, 646, 34, 13, ROCK);
 polyFill(
   [
-    [607, 642],
-    [628, 666],
-    [690, 676],
+    [534, 636],
+    [570, 660],
+    [650, 676],
     [768, 668],
-    [768, 690],
-    [640, 684],
-    [612, 662],
+    [768, 694],
+    [596, 688],
+    [540, 662],
   ],
   ROCK_DARK,
   0.55,
 );
 
-// Houses clustered at the base of the point: flat roofs, cream and
-// terracotta walls, a couple of lamplit windows.
-function house(x: number, y: number, w: number, h: number, wall: RGB, lit: boolean): void {
+// Houses clustered on the point: flat roofs, cream and terracotta walls,
+// each seated with its bottom resting on the rock's surface line and lit
+// by one or two tiny lamplit windows.
+function house(x: number, w: number, h: number, wall: RGB): void {
+  const y = rockTop(x + w / 2) + 2 - h;
   fillRect(x, y, w, h, wall);
   fillRect(x - 2, y - 3, w + 4, 4, C("#5A3A2E"));
-  if (lit) fillRect(x + w * 0.38, y + h * 0.34, 4.5, 5.5, LAMP, 0.95);
+  fillRect(x + w * 0.24, y + h * 0.36, 4.5, 5.5, LAMP, 0.95);
+  if (w >= 36) fillRect(x + w * 0.62, y + h * 0.36, 4.5, 5.5, LAMP, 0.95);
 }
-house(598, 630, 30, 20, C("#F3E5C3"), true);
-house(634, 642, 36, 22, C("#D97B4F"), false);
-house(716, 634, 28, 18, C("#F3E5C3"), true);
-house(676, 650, 30, 16, C("#E8D9B0"), false);
+house(536, 38, 24, C("#F3E5C3"));
+house(582, 42, 26, C("#D97B4F"));
+house(690, 38, 24, C("#F3E5C3"));
+house(733, 33, 21, C("#E8D9B0"));
 
 // The lighthouse: a tapered white tower with two coral-red bands, a dark
 // gallery, and a warm lit lamp under a coral cap.
-const LX = 688;
-const towerBase = 596, towerTop = 452;
-const halfW = (y: number): number => 13 + ((y - towerTop) / (towerBase - towerTop)) * 6;
+const LX = 655;
+const towerBase = 592, towerTop = 333;
+const halfW = (y: number): number => 16 + ((y - towerTop) / (towerBase - towerTop)) * 8;
 function towerBand(y0: number, y1: number, col: RGB): void {
   polyFill(
     [
@@ -401,20 +427,31 @@ function towerBand(y0: number, y1: number, col: RGB): void {
     col,
   );
 }
-towerBand(560, towerBase, TOWER_WHITE);
-towerBand(532, 560, CORAL);
-towerBand(492, 532, TOWER_WHITE);
-towerBand(466, 492, CORAL);
-towerBand(towerTop, 466, TOWER_WHITE);
-fillRect(LX - 17, 444, 34, 8, C("#22333A")); // gallery platform
-fillRect(LX - 8, 424, 16, 20, C("#22333A")); // lamp room
-disc(LX, 434, 13, LAMP, 0.3); // lamp glow
-disc(LX, 434, 5.5, LAMP, 1); // the lit lamp itself
+towerBand(527, towerBase, TOWER_WHITE);
+towerBand(477, 527, CORAL);
+towerBand(405, 477, TOWER_WHITE);
+towerBand(358, 405, CORAL);
+towerBand(towerTop, 358, TOWER_WHITE);
+fillRect(LX - 22, 323, 44, 10, C("#22333A")); // gallery platform
+fillRect(LX - 10, 299, 20, 24, C("#22333A")); // lamp room
+// The lamp's beam: a translucent pale-gold cone fanning left across the
+// sky, drawn before the lamp so the lamp itself sits bright on top of it.
 polyFill(
   [
-    [LX - 12, 424],
-    [LX + 12, 424],
-    [LX, 409],
+    [LX, 311],
+    [180, 251],
+    [180, 371],
+  ],
+  LAMP,
+  0.12,
+);
+disc(LX, 311, 22, LAMP, 0.3); // lamp glow
+disc(LX, 311, 6.5, LAMP, 1); // the lit lamp itself
+polyFill(
+  [
+    [LX - 15, 299],
+    [LX + 15, 299],
+    [LX, 281],
   ],
   CORAL_DARK,
 );
